@@ -3,25 +3,31 @@ import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
+  isLoading?: boolean;
 }
 
 export const Button = ({
-  variant = "primary",
-  className = "",
   children,
+  variant = "primary",
+  isLoading = false,
+  className = "",
   ...props
 }: ButtonProps) => {
   const base =
-    "rounded-md px-4 py-2 font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-1";
+    "rounded-lg px-4 py-2 font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-60 disabled:cursor-not-allowed";
 
   const styles =
     variant === "primary"
-      ? "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-400"
+      ? "bg-primary text-white hover:brightness-105 focus:ring-primary"
       : "bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-300";
 
   return (
-    <button {...props} className={`${base} ${styles} ${className}`}>
-      {children}
+    <button
+      {...props}
+      disabled={isLoading}
+      className={`${base} ${styles} ${className}`}
+    >
+      {isLoading ? "Cargando..." : children}
     </button>
   );
 };

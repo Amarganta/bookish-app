@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
+import { Input } from "@atoms/Input/Input";
+import { Button } from "@atoms/Button/Button";
 import { useDispatch } from "react-redux";
 import { login } from "@features/authSlice";
 import { useRouter } from "next/navigation";
 import type { AppDispatch } from "@lib/store";
-import { Input } from "@/components/atoms/Input/Input";
-import { Button } from "@/components/atoms/Button/Button";
 
 export const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,6 +13,7 @@ export const LoginForm = () => {
 
   const [form, setForm] = useState({ name: "", email: "" });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,21 +26,19 @@ export const LoginForm = () => {
       return;
     }
 
-    dispatch(
-      login({
-        id: Date.now().toString(),
-        name: form.name,
-        email: form.email,
-      })
-    );
-
-    router.push("/feed");
+    setIsLoading(true);
+    setTimeout(() => {
+      dispatch(
+        login({ id: Date.now().toString(), name: form.name, email: form.email })
+      );
+      router.push("/feed");
+    }, 1000);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-xl shadow-md flex flex-col gap-4 w-80"
+      className="bg-white shadow-md rounded-2xl p-6 flex flex-col gap-4 w-full max-w-sm animate-fade-in"
     >
       <h1 className="text-2xl font-semibold text-center mb-2 text-gray-800">
         📚 Bookish
@@ -63,9 +62,9 @@ export const LoginForm = () => {
         onChange={handleChange}
       />
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-      <Button type="submit" className="mt-2">
+      <Button type="submit" isLoading={isLoading} className="mt-2">
         Iniciar sesión
       </Button>
     </form>

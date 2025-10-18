@@ -1,23 +1,24 @@
 "use client";
-
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Provider } from "react-redux";
-import { makeStore, type AppStore } from "@lib/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { makeStore, AppStore, persistor } from "./store";
 
-export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const storeRef = useRef<AppStore | null>(null);
-
+export default function StoreProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const storeRef = useRef<AppStore>();
   if (!storeRef.current) {
     storeRef.current = makeStore();
   }
 
-  useEffect(() => {
-    if (storeRef.current) {
-      const unsubscribe = setupListeners(storeRef.current.dispatch);
-      return unsubscribe;
-    }
-  }, []);
-
-  return <Provider store={storeRef.current}>{children}</Provider>;
-};
+  return (
+    <Provider store={storeRef.current}>
+      <PersistGate loading={<div>Cargando...</div>} persistor={persistor}>
+        {children}
+      </PersistGate>
+    </Provider>
+  );
+}

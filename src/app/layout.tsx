@@ -1,5 +1,5 @@
 import { Poppins } from "next/font/google";
-import { StoreProvider } from "@lib/StoreProvider";
+import StoreProvider from "@lib/StoreProvider";
 import "./global.css";
 
 const poppins = Poppins({

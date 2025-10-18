@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Button/Button";
 import { useDispatch } from "react-redux";
-import { login } from "@features/authSlice";
+import { loginStart, loginSuccess, loginFailure } from "@features/authSlice";
 import { useRouter } from "next/navigation";
 import type { AppDispatch } from "@lib/store";
 
@@ -11,47 +11,107 @@ export const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  const [form, setForm] = useState({ name: "", email: "" });
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email) {
+    setError("");
+
+    if (!form.email || !form.password || (isRegister && !form.fullName)) {
       setError("Por favor completa todos los campos.");
       return;
     }
 
+    if (!validateEmail(form.email)) {
+      setError("Por favor ingresa un correo válido.");
+      return;
+    }
+
     setIsLoading(true);
-    setTimeout(() => {
-      dispatch(
-        login({ id: Date.now().toString(), name: form.name, email: form.email })
-      );
-      router.push("/feed");
-    }, 1000);
+    dispatch(loginStart());
+
+    try {
+      // 🔹 Simulación del registro
+      if (isRegister) {
+        // En un backend real harías una llamada a la API aquí.
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const newUser = {
+          id: Date.now().toString(),
+          name: form.fullName,
+          email: form.email,
+          avatar: `https://api.dicebear.com/8.x/thumbs/svg?seed=${form.fullName}`,
+        };
+
+        dispatch(loginSuccess(newUser));
+        localStorage.setItem("mockUser", JSON.stringify(newUser));
+        router.push("/feed");
+      } else {
+        // 🔹 Simulación del login
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Simulamos un usuario guardado (en una app real verificarías credenciales)
+        const storedUser = localStorage.getItem("mockUser");
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          if (userData.email === form.email) {
+            dispatch(loginSuccess(userData));
+            router.push("/feed");
+          } else {
+            throw new Error("Credenciales inválidas.");
+          }
+        } else {
+          throw new Error("No existe un usuario registrado con ese correo.");
+        }
+      }
+    } catch (err: any) {
+      dispatch(loginFailure(err.message));
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded-2xl p-6 flex flex-col gap-4 w-full max-w-sm animate-fade-in"
+      className="bg-white shadow-md rounded-2xl p-6 flex flex-col gap-4 w-full max-w-sm animate-fade-in overflow-hidden"
     >
       <h1 className="text-2xl font-semibold text-center mb-2 text-gray-800">
-        📚 Bookish
+        {isRegister ? "Crea tu cuenta" : "Inicia sesión"}
       </h1>
 
-      <Input
-        label="Nombre"
-        name="name"
-        type="text"
-        placeholder="Tu nombre"
-        value={form.name}
-        onChange={handleChange}
-      />
+      {/* Campo nombre solo para registro */}
+      <div
+        className={`transition-all duration-500 overflow-hidden ${
+          isRegister ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <Input
+          label="Nombre completo"
+          name="fullName"
+          type="text"
+          placeholder="Tu nombre"
+          value={form.fullName}
+          onChange={handleChange}
+        />
+      </div>
 
       <Input
         label="Correo electrónico"
@@ -62,11 +122,44 @@ export const LoginForm = () => {
         onChange={handleChange}
       />
 
+      <Input
+        label="Contraseña"
+        name="password"
+        type="password"
+        placeholder="••••••••"
+        value={form.password}
+        onChange={handleChange}
+      />
+
       {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
       <Button type="submit" isLoading={isLoading} className="mt-2">
-        Iniciar sesión
+        {isRegister ? "Registrarse" : "Iniciar sesión"}
       </Button>
+
+      <p className="text-sm text-center text-gray-600 mt-2">
+        {isRegister ? (
+          <>
+            ¿Ya tienes cuenta?{" "}
+            <span
+              onClick={() => setIsRegister(false)}
+              className="text-primary font-medium cursor-pointer hover:underline"
+            >
+              Inicia sesión
+            </span>
+          </>
+        ) : (
+          <>
+            ¿No tienes cuenta?{" "}
+            <span
+              onClick={() => setIsRegister(true)}
+              className="text-primary font-medium cursor-pointer hover:underline"
+            >
+              Regístrate
+            </span>
+          </>
+        )}
+      </p>
     </form>
   );
 };

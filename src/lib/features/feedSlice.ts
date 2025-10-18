@@ -13,7 +13,7 @@ export interface Post {
   comments: Comment[];
 }
 
-interface FeedState {
+export interface FeedState {
   posts: Post[];
 }
 

@@ -1,33 +1,16 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useSession, signOut } from "next-auth/react";
-import { logout } from "@features/authSlice";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { RootState } from "@lib/store";
+import { signOut } from "next-auth/react";
+import { logout } from "@features/authSlice";
 import { Button } from "@atoms/Button/Button";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data: session } = useSession();
-  const authUser = useSelector((state: RootState) => state.auth.user);
-  const isReduxAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-
-  // 🔹 Determinar origen del login
-  const isGoogleAuth = !!session?.user;
-  const isManualAuth = isReduxAuthenticated && !isGoogleAuth;
-
-  // 🔹 Obtener datos del usuario actual (de Redux o de NextAuth)
-  const currentUser = isGoogleAuth
-    ? {
-        name: session?.user?.name ?? "Usuario Google",
-        email: session?.user?.email ?? "",
-        avatar: session?.user?.image ?? "",
-      }
-    : authUser;
+  const { isAuthenticated, isGoogleAuth, currentUser } = useAuth();
 
   const handleLogout = async () => {
     if (isGoogleAuth) {
@@ -38,7 +21,7 @@ export const Header = () => {
     }
   };
 
-  if (!currentUser) return null;
+  if (!isAuthenticated || !currentUser) return null;
 
   return (
     <header className="flex justify-between items-center p-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm">

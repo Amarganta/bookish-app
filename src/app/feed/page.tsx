@@ -1,31 +1,36 @@
 "use client";
-import { useSelector } from "react-redux";
-import { RootState } from "@lib/store";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Header } from "@organisms/Header/Header";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function FeedPage() {
+  const { isAuthenticated, currentUser, loading, isHydrated } = useAuth();
   const router = useRouter();
-  const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.auth
-  );
 
-  // Si no está logueado, redirigimos al login
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Solo redirigir después de hidratación
+    if (isHydrated && !loading && !isAuthenticated) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, loading, isHydrated, router]);
 
-  if (!isAuthenticated) return null;
+  // Mostrar loading mientras se hidrata
+  if (!isHydrated || loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>Redirecting to login...</div>;
+  }
 
   return (
     <main className="min-h-screen bg-bg-custom">
       <Header />
       <section className="max-w-3xl mx-auto p-4">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-          ¡Hola, {user?.name.split(" ")[0]}!
+          ¡Hola, {currentUser?.name}!
         </h2>
         <p className="text-gray-600">
           Este será tu <strong>feed de libros</strong>. ✨

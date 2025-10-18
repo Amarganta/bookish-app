@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Button/Button";
 import { useDispatch } from "react-redux";
@@ -136,6 +138,27 @@ export const LoginForm = () => {
       <Button type="submit" isLoading={isLoading} className="mt-2">
         {isRegister ? "Registrarse" : "Iniciar sesión"}
       </Button>
+      <div className="flex items-center gap-2 my-3">
+        <hr className="flex-1 border-gray-300" />
+        <span className="text-gray-500 text-sm">o</span>
+        <hr className="flex-1 border-gray-300" />
+      </div>
+
+      <button
+        type="button"
+        onClick={() => signIn("google")}
+        className="flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 hover:bg-gray-100 transition"
+      >
+        <Image
+          src="https://www.svgrepo.com/show/355037/google.svg"
+          alt="Google"
+          width={20}
+          height={20}
+        />
+        <span className="text-sm font-medium text-gray-700">
+          Continuar con Google
+        </span>
+      </button>
 
       <p className="text-sm text-center text-gray-600 mt-2">
         {isRegister ? (

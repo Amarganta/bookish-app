@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { makeStore, AppStore, persistor } from "./store";
+import { SessionProvider } from "next-auth/react";
 
 export default function StoreProvider({
   children,

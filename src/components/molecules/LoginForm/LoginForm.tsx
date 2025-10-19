@@ -6,12 +6,10 @@ import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Button/Button";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "@features/authSlice";
-import { useRouter } from "next/navigation";
 import type { AppDispatch } from "@lib/store";
 
 export const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
 
   const [form, setForm] = useState({
     fullName: "",
@@ -50,9 +48,7 @@ export const LoginForm = () => {
     dispatch(loginStart());
 
     try {
-      // 🔹 Simulación del registro
       if (isRegister) {
-        // En un backend real harías una llamada a la API aquí.
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const newUser = {
@@ -64,17 +60,15 @@ export const LoginForm = () => {
 
         dispatch(loginSuccess(newUser));
         localStorage.setItem("mockUser", JSON.stringify(newUser));
-        router.push("/feed");
+        // ✅ LoginTemplate se encarga del redirect automáticamente
       } else {
-        // 🔹 Simulación del login
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        // Simulamos un usuario guardado (en una app real verificarías credenciales)
         const storedUser = localStorage.getItem("mockUser");
         if (storedUser) {
           const userData = JSON.parse(storedUser);
           if (userData.email === form.email) {
             dispatch(loginSuccess(userData));
-            router.push("/feed");
+            // ✅ LoginTemplate se encarga del redirect automáticamente
           } else {
             throw new Error("Credenciales inválidas.");
           }
@@ -90,6 +84,15 @@ export const LoginForm = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      // ✅ signIn sin callbackUrl - NextAuth maneja el redirect
+      await signIn("google");
+    } catch (error) {
+      console.error("Error Google login:", error);
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -99,7 +102,6 @@ export const LoginForm = () => {
         {isRegister ? "Crea tu cuenta" : "Inicia sesión"}
       </h1>
 
-      {/* Campo nombre solo para registro */}
       <div
         className={`transition-all duration-500 overflow-hidden ${
           isRegister ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
@@ -138,6 +140,7 @@ export const LoginForm = () => {
       <Button type="submit" isLoading={isLoading} className="mt-2">
         {isRegister ? "Registrarse" : "Iniciar sesión"}
       </Button>
+
       <div className="flex items-center gap-2 my-3">
         <hr className="flex-1 border-gray-300" />
         <span className="text-gray-500 text-sm">o</span>
@@ -146,7 +149,7 @@ export const LoginForm = () => {
 
       <button
         type="button"
-        onClick={() => signIn("google")}
+        onClick={handleGoogleLogin} // ✅ Usar la función limpia
         className="flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 hover:bg-gray-100 transition"
       >
         <Image

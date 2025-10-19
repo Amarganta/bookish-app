@@ -14,7 +14,11 @@ export const Header = () => {
 
   const handleLogout = async () => {
     if (isGoogleAuth) {
-      await signOut({ callbackUrl: "/login" });
+      // Opción 1: Logout completo (desconecta de Google también)
+      await signOut({
+        callbackUrl: "/login",
+        redirect: true,
+      });
     } else {
       dispatch(logout());
       router.push("/login");

@@ -1,4 +1,4 @@
-import { LoginTemplate } from "@/components/templates/LoginTemplate";
+import LoginTemplate from "@templates/LoginTemplate";
 
 export default function LoginPage() {
   return <LoginTemplate />;

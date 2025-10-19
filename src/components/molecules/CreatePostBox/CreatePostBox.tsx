@@ -48,7 +48,7 @@ export const CreatePostBox = () => {
 
     if ((!hasContent && !hasImages) || !currentUser) return;
 
-    // ✅ Despachar acción a Redux
+    // ✅ agregrar pos con redux
     dispatch(
       addPost({
         content: postText.trim() || "",
@@ -87,7 +87,7 @@ export const CreatePostBox = () => {
             disabled={loading}
           />
 
-          {/* Preview de imágenes seleccionadas */}
+          {/* Preview de imagenes seleccionadas */}
           {selectedImages.length > 0 && (
             <div className="mt-3 grid grid-cols-2 gap-2">
               {selectedImages.map((image, index) => (
@@ -115,7 +115,7 @@ export const CreatePostBox = () => {
                 {postText.length}/280
               </span>
 
-              {/* Botón para seleccionar imágenes */}
+              {/* Boton para seleccionar imágenes */}
               <input
                 ref={fileInputRef}
                 type="file"

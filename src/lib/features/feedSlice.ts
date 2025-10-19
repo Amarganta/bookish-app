@@ -1,16 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface Comment {
-  id: string;
-  user: string;
-  text: string;
-}
-
 export interface Post {
   id: string;
   user: string;
   content: string;
-  comments: Comment[];
 }
 
 export interface FeedState {

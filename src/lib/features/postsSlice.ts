@@ -7,7 +7,7 @@ export interface Post {
     avatar: string;
   };
   content: string;
-  images?: string[]; // ✅ Agregar soporte para imágenes
+  images?: string[];
   createdAt?: string;
 }
 

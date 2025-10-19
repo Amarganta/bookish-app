@@ -1,9 +1,5 @@
-"use client";
-
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PostCard } from "@molecules/PostCard/PostCard";
-import { setPosts } from "@features/postsSlice";
 import type { RootState } from "@lib/store";
 import type { Post } from "@features/postsSlice";
 
@@ -12,17 +8,9 @@ interface PostsListProps {
 }
 
 export const PostsList = ({ initialPosts }: PostsListProps) => {
-  const dispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts.posts);
 
-  // ✅ Inicializar con posts mock si Redux está vacío
-  useEffect(() => {
-    if (posts.length === 0 && initialPosts.length > 0) {
-      dispatch(setPosts(initialPosts));
-    }
-  }, [dispatch, initialPosts, posts.length]);
-
-  // ✅ Combinar posts del usuario con posts iniciales
+  // ✅ subir posto al "timeline en tiempo real"
   const allPosts = [
     ...posts,
     ...initialPosts.filter(

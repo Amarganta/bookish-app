@@ -30,19 +30,6 @@ export const PostsList = ({ initialPosts }: PostsListProps) => {
     ),
   ];
 
-  if (allPosts.length === 0) {
-    return (
-      <div className="bg-white rounded-lg shadow-sm p-8 text-center border border-gray-200">
-        <p className="text-gray-500 mb-2">
-          No hay posts aún. ¡Sé el primero en compartir algo! 📚
-        </p>
-        <p className="text-sm text-gray-400">
-          Comparte tus lecturas favoritas con la comunidad
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       {allPosts.map((post) => (

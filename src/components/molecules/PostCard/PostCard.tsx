@@ -21,7 +21,50 @@ export const PostCard = ({ post }: PostCardProps) => {
               {new Date(post.createdAt).toLocaleDateString()}
             </p>
           )}
-          <p className="text-gray-700 leading-relaxed">{post.content}</p>
+
+          {post.content && (
+            <p className="text-gray-700 leading-relaxed mb-3">{post.content}</p>
+          )}
+
+          {/* Galería de imágenes */}
+          {post.images && post.images.length > 0 && (
+            <div
+              className={`grid gap-2 ${
+                post.images.length === 1
+                  ? "grid-cols-1"
+                  : post.images.length === 2
+                  ? "grid-cols-2"
+                  : post.images.length === 3
+                  ? "grid-cols-2"
+                  : "grid-cols-2"
+              }`}
+            >
+              {post.images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`relative ${
+                    post.images!.length === 3 && index === 0 ? "col-span-2" : ""
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`Post image ${index + 1}`}
+                    className="w-full h-48 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => {
+                      // Aquí podrías abrir un modal para ver la imagen en grande
+                      window.open(image, "_blank");
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {!post.content && post.images && post.images.length > 0 && (
+            <p className="text-gray-500 text-sm italic">
+              {post.user.name} compartió {post.images.length} imagen
+              {post.images.length > 1 ? "s" : ""}
+            </p>
+          )}
         </div>
       </div>
     </div>

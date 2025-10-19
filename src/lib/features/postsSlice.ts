@@ -7,6 +7,7 @@ export interface Post {
     avatar: string;
   };
   content: string;
+  images?: string[]; // ✅ Agregar soporte para imágenes
   createdAt?: string;
 }
 
@@ -31,12 +32,14 @@ const postsSlice = createSlice({
       action: PayloadAction<{
         content: string;
         user: { name: string; avatar: string };
+        images?: string[]; // ✅ Incluir contenido multimedia
       }>
     ) => {
       const newPost: Post = {
         id: Date.now().toString(),
         user: action.payload.user,
         content: action.payload.content,
+        images: action.payload.images,
         createdAt: new Date().toISOString(),
       };
       state.posts.unshift(newPost); // Agregar al inicio

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { Input } from "@atoms/Input/Input";
-import { Button } from "@atoms/Button/Button";
+import { Button } from "@/components/atoms/Button/Button";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "@features/authSlice";
 import type { AppDispatch } from "@lib/store";

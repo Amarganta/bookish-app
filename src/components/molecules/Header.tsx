@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { logout } from "@features/authSlice";
-import { Button } from "@atoms/Button/Button";
+import { Button } from "@/components/atoms/Button/Button";
 import { useAuth } from "@/hooks/useAuth";
 
 export const Header = () => {

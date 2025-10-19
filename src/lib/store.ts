@@ -3,20 +3,20 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { combineReducers } from "@reduxjs/toolkit";
 import authSlice from "@features/authSlice";
-import feedSlice from "@features/feedSlice";
+import postsReducer from "@/lib/features/postsSlice";
 
 // Configuración de persistencia
 const persistConfig = {
   key: "root", // clave en localStorage
   storage, // usar localStorage
-  whitelist: ["auth"], // solo persistir el slice de auth
+  whitelist: ["auth", "posts"], // solo persistir el slice de auth
   // blacklist: ["feed"], // alternativamente, excluir específicos
 };
 
 // Combinar reducers
 const rootReducer = combineReducers({
   auth: authSlice,
-  feed: feedSlice,
+  posts: postsReducer,
 });
 
 // Crear reducer persistido

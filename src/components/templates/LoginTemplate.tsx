@@ -1,10 +1,8 @@
 "use client";
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { LoginForm } from "../molecules/LoginForm/LoginForm";
-// ... tus otros componentes de login
+import { LoginForm } from "../organisms/LoginForm";
 
 export default function LoginTemplate() {
   const { isAuthenticated, loading, isHydrated } = useAuth();

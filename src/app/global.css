@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* 🎨 THEME: colores pastel y fuente base */
+@theme {
+  --color-primary: #8b5cf6; /* violeta pastel */
+  --color-accent: #f9a8d4; /* rosa suave */
+  --color-bg: #fdf8ff; /* fondo cálido */
+  --font-sans: "Poppins", sans-serif;
+}
+
+/* 🌸 Base global */
+html,
+body {
+  @apply min-h-screen bg-[--color-bg] text-gray-800 font-sans antialiased;
+}
+
+/* ✨ Animaciones */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}

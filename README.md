@@ -174,46 +174,6 @@ src/
 └── types/                # Interfaces TypeScript centralizadas
 ```
 
-## 🎨 Componentes Implementados
-
-### Atoms
-- `Button` - Botón reutilizable con variantes
-- `Input` - Campo de entrada con validaciones
-- `Avatar` - Imagen de perfil con fallback
-- `Card` - Contenedor base con estilos
-
-### Molecules
-- `PostCard` - Tarjeta de publicación con interacciones
-- `CommentSection` - Sistema completo de comentarios
-- `CreatePostBox` - Formulario para crear publicaciones
-- `PostsList` - Lista optimizada de publicaciones
-
-### Organisms
-- `AppFeed` - Feed principal de la aplicación
-- `LandingLayout` - Página de inicio con CTA
-- `AuthButton` - Componente de autenticación completo
-
-## 🔧 Configuración de Despliegue
-
-### Vercel (Recomendado)
-
-1. Conecta tu repositorio a Vercel
-2. Configura las variables de entorno en el dashboard
-3. El deploy se ejecuta automáticamente en cada push
-
-### Variables de Entorno en Producción
-```env
-GOOGLE_CLIENT_ID=tu_google_client_id_prod
-GOOGLE_CLIENT_SECRET=tu_google_client_secret_prod
-NEXTAUTH_SECRET=tu_nextauth_secret_prod
-NEXTAUTH_URL=https://tu-dominio.vercel.app
-```
-
-
-## 📝 Notas del Desarrollador
-
-
-## 📄 Licencia
 
 
 **Desarrollado con ❤️ usando Next.js, TypeScript y Tailwind CSS**

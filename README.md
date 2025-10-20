@@ -106,9 +106,10 @@ Esta aplicación fue desarrollada como una red social completa que permite a los
         
 ### Cómo funciona la interfaz
 - Desde el landing page haz click en "Empieza Ya"
-- Regiistrate como Usuario
+- Registrate como Usuario
   - Inicia sesión
 ó 
+- Inicia sesón con Google
 - Interactua con la pagina feed y sus componentes
 ## 🛠️ Instalación y Configuración
 

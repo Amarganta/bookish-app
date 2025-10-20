@@ -1,4 +1,5 @@
 import { Poppins } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import StoreProvider from "@/providers/StoreProvider";
 import "./global.css";
 import { Metadata } from "next";
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={poppins.variable}>
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <SessionProvider>
+          <StoreProvider>{children}</StoreProvider>
+        </SessionProvider>
       </body>
     </html>
   );

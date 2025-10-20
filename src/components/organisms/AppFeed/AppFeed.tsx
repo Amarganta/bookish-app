@@ -3,7 +3,7 @@ import { PostsList } from "@molecules/PostsList/PostsList";
 
 export const AppFeed = () => {
   return (
-    <div className="space-y-4 max-w-2xl mx-auto">
+    <div className="space-y-6">
       <CreatePostBox />
       <PostsList />
     </div>

@@ -16,34 +16,9 @@ export const Header = () => {
   const { isAuthenticated, isGoogleAuth, currentUser } = useAuth();
 
   const handleLogout = async () => {
-    try {
-      if (isGoogleAuth) {
-        // Para Google Auth: NextAuth maneja la limpieza automáticamente
-        await signOut({
-          callbackUrl: "/login",
-          redirect: true,
-        });
-      } else {
-        // Para autenticación manual: limpiar todo
-        dispatch(logout());
-
-        // Limpiar localStorage
-        localStorage.removeItem("mockUser");
-        localStorage.removeItem("persist:auth");
-        localStorage.removeItem("persist:posts");
-        localStorage.removeItem("persist:feed");
-
-        // Limpiar sessionStorage
-        sessionStorage.clear();
-
-        // Redirigir
-        router.push("/login");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-      // Fallback: limpiar todo y redirigir
-      localStorage.clear();
-      sessionStorage.clear();
+    if (isGoogleAuth) {
+      await signOut({ callbackUrl: "/login" });
+    } else {
       dispatch(logout());
       router.push("/login");
     }

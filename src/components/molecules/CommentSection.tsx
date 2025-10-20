@@ -206,7 +206,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
                 <Button
                   type="submit"
                   variant="primary"
-                  size="sm"
+                  size="small"
                   disabled={!newComment.trim() || isSubmitting}
                   isLoading={isSubmitting}
                   className="rounded-xl sm:rounded-2xl px-4 sm:px-6 py-2.5 sm:py-3 min-w-[80px] w-full sm:w-auto"

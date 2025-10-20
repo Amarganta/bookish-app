@@ -1,17 +1,8 @@
-import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { GoogleProfile } from "next-auth/providers/google";
+import type { NextAuthOptions } from "next-auth";
 
-// 🔹 Log para debugging (temporal)
-// console.log("🔍 Environment variables check:", {
-//   hasClientId: !!process.env.GOOGLE_CLIENT_ID,
-//   hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
-//   hasSecret: !!process.env.NEXTAUTH_SECRET,
-//   nodeEnv: process.env.NODE_ENV,
-//   clientIdStart: process.env.GOOGLE_CLIENT_ID?.substring(0, 10) + "...",
-// });
-
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -59,9 +50,6 @@ const handler = NextAuth({
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
-});
-
-export { handler as GET, handler as POST };
+};

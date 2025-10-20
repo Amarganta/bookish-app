@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { GoogleProfile } from "next-auth/providers/google";
+import type { NextAuthOptions } from "next-auth";
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -27,7 +28,7 @@ export const authOptions: AuthOptions = {
       if (token && session.user) {
         session.user.name = token.name as string;
         session.user.email = token.email as string;
-        session.user.image = token.picture as string;
+        session.user.image = token.avatar as string;
       }
       return session;
     },

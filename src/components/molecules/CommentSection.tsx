@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar } from "@atoms/Avatar/Avatar";
-import { Button } from "@atoms/Button/Button";
+import { Avatar } from "@atoms/Avatar";
+import { Button } from "@atoms/Button";
 import { addComment } from "@features/postsSlice";
 import { useAuth } from "@/hooks/useAuth";
 import type { Post } from "@features/postsSlice";
 import type { RootState } from "@lib/store";
-import { Input } from "@/components/atoms/Input/Input";
+import { Input } from "@/components/atoms/Input";
 
 interface CommentSectionProps {
   post: Post;
@@ -169,7 +169,9 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
                   />
                 </svg>
               </div>
-              <p className="text-gray-500 text-xs sm:text-sm">Aún no hay comentarios</p>
+              <p className="text-gray-500 text-xs sm:text-sm">
+                Aún no hay comentarios
+              </p>
               <p className="text-gray-400 text-xs mt-1">
                 ¡Sé el primero en comentar!
               </p>

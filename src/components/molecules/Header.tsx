@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { logout } from "@features/authSlice";
-import { Button } from "@/components/atoms/Button/Button";
+import { Button } from "@/components/atoms/Button";
 import { useAuth } from "@/hooks/useAuth";
-import { Avatar } from "../atoms/Avatar/Avatar";
+import { Avatar } from "../atoms/Avatar";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,12 +16,34 @@ export const Header = () => {
   const { isAuthenticated, isGoogleAuth, currentUser } = useAuth();
 
   const handleLogout = async () => {
-    if (isGoogleAuth) {
-      await signOut({
-        callbackUrl: "/login",
-        redirect: true,
-      });
-    } else {
+    try {
+      if (isGoogleAuth) {
+        // Para Google Auth: NextAuth maneja la limpieza automáticamente
+        await signOut({
+          callbackUrl: "/login",
+          redirect: true,
+        });
+      } else {
+        // Para autenticación manual: limpiar todo
+        dispatch(logout());
+
+        // Limpiar localStorage
+        localStorage.removeItem("mockUser");
+        localStorage.removeItem("persist:auth");
+        localStorage.removeItem("persist:posts");
+        localStorage.removeItem("persist:feed");
+
+        // Limpiar sessionStorage
+        sessionStorage.clear();
+
+        // Redirigir
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Fallback: limpiar todo y redirigir
+      localStorage.clear();
+      sessionStorage.clear();
       dispatch(logout());
       router.push("/login");
     }

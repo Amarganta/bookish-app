@@ -1,4 +1,4 @@
-import { PostCard } from "@/components/organisms/PostCard/PostCard";
+import { PostCard } from "@/components/organisms/PostCard";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 

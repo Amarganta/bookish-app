@@ -2,12 +2,12 @@
 
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@atoms/Button/Button";
+import { Button } from "@atoms/Button";
 import { addPost } from "@features/postsSlice";
 import { useAuth } from "@/hooks/useAuth";
 import type { RootState } from "@lib/store";
-import { Avatar } from "@/components/atoms/Avatar/Avatar";
-import { Image } from "@atoms/Image/Image";
+import { Avatar } from "@/components/atoms/Avatar";
+import { Image } from "@atoms/Image";
 
 export const CreatePostBox = () => {
   const [postText, setPostText] = useState("");

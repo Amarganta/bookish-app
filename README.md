@@ -100,9 +100,9 @@ Esta aplicación fue desarrollada como una red social completa que permite a los
   - [x] README.md con instrucciones claras
   - [x] Código limpio y documentado
   
-- [x] **Detalles del Despliegue**
+- [ ] **Detalles del Despliegue**
   - [ ] URL pública incluida
-  - [x] Configuración de despliegue documentada
+  - [ ] Configuración de despliegue documentada
         
 ### Cómo funciona la interfaz
 - Desde el landing page haz click en "Empieza Ya"

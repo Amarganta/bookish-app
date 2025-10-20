@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { Input } from "@atoms/Input";
+import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
 import { useDispatch } from "react-redux";
-import { loginStart, loginSuccess, loginFailure } from "@features/authSlice";
-import type { AppDispatch } from "@lib/store";
+import { loginStart, loginSuccess, loginFailure } from "@/lib/features/authSlice";
+import type { AppDispatch } from "@/lib/store";
 
 export const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -56,6 +56,7 @@ export const LoginForm = () => {
           name: form.fullName,
           email: form.email,
           avatar: `https://api.dicebear.com/8.x/thumbs/svg?seed=${form.fullName}`,
+          createdAt: new Date().toISOString(),
         };
 
         dispatch(loginSuccess(newUser));

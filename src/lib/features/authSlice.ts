@@ -1,16 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-}
+import { AuthUser } from "@/types/types";
 
 export interface AuthState {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -31,7 +23,7 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<User>) => {
+    loginSuccess: (state, action: PayloadAction<AuthUser>) => {
       state.loading = false;
       state.user = action.payload;
       state.isAuthenticated = true;
@@ -55,15 +47,8 @@ const authSlice = createSlice({
   },
 });
 
-// Configuración de persistencia específica para auth
-const persistConfig = {
-  key: "auth",
-  storage,
-  whitelist: ["user", "isAuthenticated"], // solo persistir user e isAuthenticated
-};
-
 export const { loginStart, loginSuccess, loginFailure, logout, clearError } =
   authSlice.actions;
 
-// Exportar reducer persistido
-export default persistReducer(persistConfig, authSlice.reducer);
+// Exportar reducer sin persistencia (se maneja en store.ts)
+export default authSlice.reducer;

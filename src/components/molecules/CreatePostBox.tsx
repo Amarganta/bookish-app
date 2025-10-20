@@ -48,9 +48,12 @@ export const CreatePostBox = () => {
     dispatch(
       addPost({
         content: postText.trim() || "",
-        user: {
+        author: {
+          id: currentUser.id,
           name: currentUser.name,
-          avatar: currentUser.avatar || "https://i.pravatar.cc/150?img=5",
+          email: currentUser.email,
+          avatar: currentUser.avatar,
+          createdAt: currentUser.createdAt,
         },
         image: selectedImage || undefined,
       })

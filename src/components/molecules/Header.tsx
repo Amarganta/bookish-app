@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { logout } from "@features/authSlice";
+import { logout } from "@/lib/features/authSlice";
 import { Button } from "@/components/atoms/Button";
 import { useAuth } from "@/hooks/useAuth";
-import { Avatar } from "../atoms/Avatar";
+import { Avatar } from "@/components/atoms/Avatar";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,9 +16,37 @@ export const Header = () => {
   const { isAuthenticated, isGoogleAuth, currentUser } = useAuth();
 
   const handleLogout = async () => {
-    if (isGoogleAuth) {
-      await signOut({ callbackUrl: "/login" });
-    } else {
+    try {
+      if (isGoogleAuth) {
+        // Para Google Auth: NextAuth maneja la limpieza automáticamente
+        await signOut({ 
+          callbackUrl: "/login",
+          redirect: true 
+        });
+      } else {
+        // Para autenticación manual: limpiar TODO
+        
+        // 1. Limpiar Redux store
+        dispatch(logout());
+        
+        // 2. Limpiar localStorage específico
+        localStorage.removeItem('mockUser');
+        localStorage.removeItem('persist:root');
+        localStorage.removeItem('persist:auth');
+        localStorage.removeItem('persist:posts');
+        
+        // 3. Limpiar sessionStorage
+        sessionStorage.clear();
+        
+        // 4. Redirigir
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      
+      // Fallback: limpiar todo y redirigir
+      localStorage.clear();
+      sessionStorage.clear();
       dispatch(logout());
       router.push("/login");
     }

@@ -1,7 +1,7 @@
 import { CommentSection } from "@/components/molecules/CommentSection";
-import { Avatar } from "@atoms/Avatar";
-import { Image } from "@atoms/Image";
-import type { Post } from "@features/postsSlice";
+import { Avatar } from "@/components/atoms/Avatar";
+import { Image } from "@/components/atoms/Image";
+import type { Post } from "@/types/types";
 import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -19,14 +19,14 @@ export const PostCard = ({ post }: PostCardProps) => {
       <header className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-3">
           <Avatar
-            src={post.user.avatar}
-            alt={post.user.name}
+            src={post.author?.avatar || ""}
+            alt={post.author?.name || "Usuario"}
             size="md"
             border
           />
           <div>
             <h3 className="font-semibold text-gray-900 leading-tight">
-              {post.user.name}
+              {post.author?.name || "Usuario"}
             </h3>
             {post.createdAt && (
               <time className="text-xs text-gray-500" dateTime={post.createdAt}>
@@ -68,7 +68,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
       {!post.content && post.image && (
         <p className="text-gray-500 text-sm italic mb-3">
-          {post.user.name} compartió una imagen 📸
+          {post.author?.name || "Usuario"} compartió una imagen 📸
         </p>
       )}
 

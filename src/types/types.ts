@@ -2,7 +2,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  avatar: string;
+  avatar?: string;
+  createdAt?: string;
 }
 
 export interface Post {
@@ -13,6 +14,7 @@ export interface Post {
   createdAt: string;
   likes: number;
   comments?: Comment[];
+  commentsCount: number;
 }
 
 export interface Comment {
@@ -20,4 +22,17 @@ export interface Comment {
   content: string;
   author: User;
   createdAt: string;
+}
+
+// Tipos para autenticación
+export interface AuthUser extends User {
+  createdAt: string;
+}
+
+// Tipos para Google Auth
+export interface GoogleUser {
+  name: string;
+  email: string;
+  image: string;
+  id?: string;
 }

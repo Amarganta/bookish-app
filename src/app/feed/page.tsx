@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { FeedTemplate } from "@/components/templates/FeedTemplate";
 
 export default function FeedPage() {
-  const { isAuthenticated, currentUser, loading, isHydrated } = useAuth();
+  const { isAuthenticated, loading, isHydrated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

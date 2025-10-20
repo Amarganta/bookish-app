@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-// 🔹 Log para debugging (temporal)
+//  Log para debugging (temporal)
 // console.log("🔍 Environment variables check:", {
 //   hasClientId: !!process.env.GOOGLE_CLIENT_ID,
 //   hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
@@ -22,7 +22,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      console.log("🔹 JWT Callback:", {
+      console.log("JWT Callback:", {
         account: !!account,
         profile: !!profile,
       });
@@ -33,7 +33,7 @@ const handler = NextAuth({
         token.email = profile.email;
         token.picture = (profile as any).picture;
 
-        console.log("✅ JWT Token updated:", {
+        console.log("JWT Token updated:", {
           id: token.id,
           name: token.name,
           email: token.email,
@@ -42,7 +42,7 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log("🔹 Session Callback:", {
+      console.log("Session Callback:", {
         token: !!token,
         session: !!session,
       });

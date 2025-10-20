@@ -21,7 +21,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
 
-  // ✅ Obtener el post actualizado desde Redux
+  // Obtener el post actualizado desde Redux
   const reduxPosts = useSelector((state: RootState) => state.posts.list);
   const updatedPost =
     reduxPosts.find((p) => p.id === initialPost.id) || initialPost;
@@ -116,7 +116,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
           </svg>
 
           <span className="text-xs sm:text-sm font-medium">
-            {/* ✅ Usar updatedPost en lugar de post inicial */}
+            {/* Usar updatedPost en lugar de post inicial */}
             {updatedPost.commentsCount > 0
               ? `${updatedPost.commentsCount} ${
                   updatedPost.commentsCount === 1 ? "comentario" : "comentarios"
@@ -145,7 +145,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
       {/* Lista de comentarios */}
       {isExpanded && (
         <div className="space-y-3 sm:space-y-4 mb-3 sm:mb-4">
-          {/* ✅ Usar updatedPost.comments */}
+          {/* Usar updatedPost.comments */}
           {updatedPost.comments && updatedPost.comments.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
               {updatedPost.comments.map((comment) => (

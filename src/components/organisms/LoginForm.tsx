@@ -5,7 +5,11 @@ import Image from "next/image";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
 import { useDispatch } from "react-redux";
-import { loginStart, loginSuccess, loginFailure } from "@/lib/features/authSlice";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "@/lib/features/authSlice";
 import type { AppDispatch } from "@/lib/store";
 
 export const LoginForm = () => {
@@ -61,7 +65,7 @@ export const LoginForm = () => {
 
         dispatch(loginSuccess(newUser));
         localStorage.setItem("mockUser", JSON.stringify(newUser));
-        // ✅ LoginTemplate se encarga del redirect automáticamente
+        //LoginTemplate se encarga del redirect automáticamente
       } else {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const storedUser = localStorage.getItem("mockUser");
@@ -69,7 +73,7 @@ export const LoginForm = () => {
           const userData = JSON.parse(storedUser);
           if (userData.email === form.email) {
             dispatch(loginSuccess(userData));
-            // ✅ LoginTemplate se encarga del redirect automáticamente
+            //LoginTemplate se encarga del redirect automáticamente
           } else {
             throw new Error("Credenciales inválidas.");
           }
@@ -87,7 +91,7 @@ export const LoginForm = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      // ✅ signIn sin callbackUrl - NextAuth maneja el redirect
+      // signIn - NextAuth maneja el redirect
       await signIn("google");
     } catch (error) {
       console.error("Error Google login:", error);
@@ -150,7 +154,7 @@ export const LoginForm = () => {
 
       <button
         type="button"
-        onClick={handleGoogleLogin} // ✅ Usar la función limpia
+        onClick={handleGoogleLogin}
         className="flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 hover:bg-gray-100 transition"
       >
         <Image

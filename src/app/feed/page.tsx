@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Header } from "@/components/molecules/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { FeedTemplate } from "@/components/templates/FeedTemplate";
 

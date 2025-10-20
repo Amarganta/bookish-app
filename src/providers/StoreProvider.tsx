@@ -2,8 +2,8 @@
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { makeStore, AppStore, persistor } from "./store";
 import { SessionProvider } from "next-auth/react";
+import { makeStore, AppStore, persistor } from "../lib/store";
 
 export default function StoreProvider({
   children,
@@ -16,10 +16,12 @@ export default function StoreProvider({
   }
 
   return (
-    <Provider store={storeRef.current}>
-      <PersistGate loading={<div>Cargando...</div>} persistor={persistor}>
-        {children}
-      </PersistGate>
-    </Provider>
+    <SessionProvider>
+      <Provider store={storeRef.current}>
+        <PersistGate loading={<div>Cargando...</div>} persistor={persistor}>
+          {children}
+        </PersistGate>
+      </Provider>
+    </SessionProvider>
   );
 }

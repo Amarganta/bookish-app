@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react";
 import { logout } from "@features/authSlice";
 import { Button } from "@/components/atoms/Button/Button";
 import { useAuth } from "@/hooks/useAuth";
+import { Avatar } from "../atoms/Avatar/Avatar";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -36,10 +37,11 @@ export const Header = () => {
           {currentUser.name}
         </span>
         {currentUser.avatar && (
-          <img
-            src={currentUser.avatar}
-            alt="avatar"
-            className="w-8 h-8 rounded-full border border-gray-300"
+          <Avatar
+            src={currentUser.avatar || ""}
+            alt={currentUser.name || "Usuario"}
+            size="sm"
+            border={true}
           />
         )}
         <Button

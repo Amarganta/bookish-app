@@ -1,26 +1,13 @@
-import { useSelector, useDispatch } from "react-redux";
-import { PostCard } from "@molecules/PostCard/PostCard";
-import type { RootState } from "@lib/store";
-import type { Post } from "@features/postsSlice";
+import { PostCard } from "@/components/organisms/PostCard/PostCard";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-interface PostsListProps {
-  initialPosts: Post[];
-}
-
-export const PostsList = ({ initialPosts }: PostsListProps) => {
-  const posts = useSelector((state: RootState) => state.posts.posts);
-
-  // ✅ subir posto al "timeline en tiempo real"
-  const allPosts = [
-    ...posts,
-    ...initialPosts.filter(
-      (mockPost) => !posts.find((userPost) => userPost.id === mockPost.id)
-    ),
-  ];
+export const PostsList = () => {
+  const { list: posts } = useSelector((state: RootState) => state.posts);
 
   return (
-    <div className="space-y-4">
-      {allPosts.map((post) => (
+    <div className="space-y-6">
+      {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
     </div>

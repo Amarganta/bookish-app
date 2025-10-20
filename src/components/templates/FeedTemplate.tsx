@@ -1,5 +1,3 @@
-"use client";
-
 import { Header } from "../molecules/Header";
 import { AppFeed } from "../organisms/AppFeed/AppFeed";
 

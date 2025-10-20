@@ -9,8 +9,7 @@ import postsReducer from "@/lib/features/postsSlice";
 const persistConfig = {
   key: "root", // clave en localStorage
   storage, // usar localStorage
-  whitelist: ["auth", "posts"], // solo persistir el slice de auth
-  // blacklist: ["feed"], // alternativamente, excluir específicos
+  whitelist: ["auth", "posts"], // los slice que quiero persistir
 };
 
 // Combinar reducers

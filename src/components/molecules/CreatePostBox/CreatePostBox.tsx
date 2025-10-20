@@ -1,54 +1,50 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@atoms/Button/Button";
 import { addPost } from "@features/postsSlice";
 import { useAuth } from "@/hooks/useAuth";
 import type { RootState } from "@lib/store";
+import { Avatar } from "@/components/atoms/Avatar/Avatar";
+import { Image } from "@atoms/Image/Image";
 
 export const CreatePostBox = () => {
   const [postText, setPostText] = useState("");
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // ✅ Una sola imagen
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
   const loading = useSelector((state: RootState) => state.posts.loading);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    // Convertir archivos a URLs para preview
-    const imageUrls: string[] = [];
-
-    Array.from(files).forEach((file) => {
-      if (file.type.startsWith("image/")) {
-        const url = URL.createObjectURL(file);
-        imageUrls.push(url);
-      }
-    });
-
-    setSelectedImages((prev) => [...prev, ...imageUrls].slice(0, 4)); // Máximo 4 imágenes
+    if (file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      setSelectedImage(url);
+    }
   };
 
-  const removeImage = (indexToRemove: number) => {
-    setSelectedImages((prev) => {
-      const newImages = prev.filter((_, index) => index !== indexToRemove);
-      // Liberar memoria del URL.createObjectURL
-      URL.revokeObjectURL(prev[indexToRemove]);
-      return newImages;
-    });
+  const removeImage = () => {
+    if (selectedImage) {
+      URL.revokeObjectURL(selectedImage);
+      setSelectedImage(null);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const hasContent = postText.trim().length > 0;
-    const hasImages = selectedImages.length > 0;
+    const hasImage = selectedImage !== null;
 
-    if ((!hasContent && !hasImages) || !currentUser) return;
+    if ((!hasContent && !hasImage) || !currentUser) return;
 
-    // ✅ agregrar pos con redux
     dispatch(
       addPost({
         content: postText.trim() || "",
@@ -56,56 +52,66 @@ export const CreatePostBox = () => {
           name: currentUser.name,
           avatar: currentUser.avatar || "https://i.pravatar.cc/150?img=5",
         },
-        images: selectedImages.length > 0 ? selectedImages : undefined,
+        image: selectedImage || undefined,
       })
     );
 
-    setSelectedImages([]);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
     setPostText("");
+    setSelectedImage(null);
   };
+
+  if (!currentUser) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+        <p className="text-gray-500 text-center">
+          Inicia sesión para crear posts
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
       <div className="flex gap-3">
-        <img
+        <Avatar
           src={currentUser?.avatar || "https://i.pravatar.cc/150?img=5"}
-          alt={currentUser?.name}
-          className="w-10 h-10 rounded-full object-cover border border-gray-300"
+          alt={currentUser?.name || "Usuario"}
+          size="md"
+          border={true}
         />
 
         <form onSubmit={handleSubmit} className="flex-1">
           <textarea
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
-            placeholder={`¿Qué estás leyendo, ${currentUser?.name}?`}
+            placeholder={`¿Qué estás leyendo, ${currentUser.name}? O comparte una foto 📸`}
             className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             rows={3}
             maxLength={280}
             disabled={loading}
           />
 
-          {/* Preview de imagenes seleccionadas */}
-          {selectedImages.length > 0 && (
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              {selectedImages.map((image, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={image}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg border border-gray-300"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
+          {/* Preview de imagen */}
+          {selectedImage && (
+            <div className="mt-3">
+              <div className="relative inline-block">
+                <Image
+                  src={selectedImage}
+                  alt="Preview de imagen"
+                  aspectRatio="landscape"
+                  rounded="lg"
+                  border={true}
+                  shadow="sm"
+                  className="w-full max-w-xs"
+                />
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                >
+                  ×
+                </button>
+              </div>
             </div>
           )}
 
@@ -115,23 +121,25 @@ export const CreatePostBox = () => {
                 {postText.length}/280
               </span>
 
-              {/* Boton para seleccionar imágenes */}
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                multiple
                 onChange={handleImageSelect}
                 className="hidden"
-                disabled={loading || selectedImages.length >= 4}
+                disabled={loading || selectedImage !== null}
               />
 
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={loading || selectedImages.length >= 4}
+                disabled={loading || selectedImage !== null}
                 className="p-2 text-gray-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Añadir imágenes"
+                title={
+                  selectedImage
+                    ? "Ya hay una imagen seleccionada"
+                    : "Añadir imagen"
+                }
               >
                 <svg
                   className="w-5 h-5"
@@ -147,19 +155,13 @@ export const CreatePostBox = () => {
                   />
                 </svg>
               </button>
-
-              {selectedImages.length > 0 && (
-                <span className="text-xs text-gray-400">
-                  {selectedImages.length}/4 imágenes
-                </span>
-              )}
             </div>
 
             <Button
               type="submit"
               variant="primary"
               size="medium"
-              disabled={!postText.trim() && !selectedImages.length}
+              disabled={!postText.trim() && !selectedImage}
               isLoading={loading}
             >
               Publicar

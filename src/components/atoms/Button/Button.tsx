@@ -1,7 +1,7 @@
 import { forwardRef, ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger" | "icon";
   size?: "small" | "medium" | "large";
   isLoading?: boolean;
   disabled?: boolean;
@@ -60,6 +60,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled:
           "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed",
         loading: "bg-red-500 text-white border-red-500 cursor-wait",
+      },
+      icon: {
+        normal: "bg-none",
+        disabled: "text-gray-400",
+        loading: "bg-transparent text-gray-600 border-transparent cursor-wait",
       },
     };
 

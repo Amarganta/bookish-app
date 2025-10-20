@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { LoginForm } from "../organisms/LoginForm";
+import { LoginForm } from "@/components/organisms/LoginForm";
 
 export default function LoginTemplate() {
   const { isAuthenticated, loading, isHydrated } = useAuth();

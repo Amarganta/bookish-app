@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import type { GoogleProfile } from "next-auth/providers/google";
 
 // 🔹 Log para debugging (temporal)
 // console.log("🔍 Environment variables check:", {
@@ -29,11 +28,10 @@ const handler = NextAuth({
       });
 
       if (account && profile) {
-        const googleProfile = profile as GoogleProfile;
-        token.id = googleProfile.sub;
-        token.name = googleProfile.name;
-        token.email = googleProfile.email;
-        token.picture = googleProfile.picture;
+        token.id = profile.sub;
+        token.name = profile.name;
+        token.email = profile.email;
+        token.picture = (profile as any).picture;
 
         console.log("✅ JWT Token updated:", {
           id: token.id,
@@ -61,7 +59,7 @@ const handler = NextAuth({
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
 });
 
 export { handler as GET, handler as POST };

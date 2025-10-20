@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "@lib/store";
+import { AuthUser, GoogleUser } from "@/types/types";
 
 export const useAuth = () => {
   const { data: session, status } = useSession();
@@ -20,11 +21,14 @@ export const useAuth = () => {
   const isManualAuth = isHydrated && isReduxAuthenticated && !isGoogleAuth;
   const isAuthenticated = isGoogleAuth || isManualAuth;
 
-  const currentUser = isGoogleAuth
+  // Crear usuario consistente para Google Auth
+  const currentUser: AuthUser | null = isGoogleAuth
     ? {
+        id: session?.user?.email || Date.now().toString(),
         name: session?.user?.name || "Usuario Google",
         email: session?.user?.email || "",
         avatar: session?.user?.image || "",
+        createdAt: new Date().toISOString(),
       }
     : authUser;
 

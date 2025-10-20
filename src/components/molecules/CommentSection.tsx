@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar } from "@atoms/Avatar";
-import { Button } from "@atoms/Button";
-import { addComment } from "@features/postsSlice";
+import { Avatar } from "@/components/atoms/Avatar";
+import { Button } from "@/components/atoms/Button";
+import { addComment } from "@/lib/features/postsSlice";
 import { useAuth } from "@/hooks/useAuth";
-import type { Post } from "@features/postsSlice";
-import type { RootState } from "@lib/store";
+import type { Post } from "@/types/types";
+import type { RootState } from "@/lib/store";
 import { Input } from "@/components/atoms/Input";
 
 interface CommentSectionProps {
@@ -60,8 +60,8 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
   const CommentItem = ({ comment }: { comment: any }) => (
     <div className="flex gap-3 group">
       <Avatar
-        src={comment.user.avatar}
-        alt={comment.user.name}
+        src={comment.author?.avatar || ""}
+        alt={comment.author?.name || "Usuario"}
         size="sm"
         border={true}
         className="flex-shrink-0"
@@ -70,7 +70,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
       <div className="flex-1 min-w-0">
         <div className="bg-gray-50 hover:bg-gray-100 transition-colors rounded-2xl px-3 sm:px-4 py-3">
           <p className="font-medium text-sm text-gray-900 mb-1 truncate">
-            {comment.user.name}
+            {comment.author?.name || "Usuario"}
           </p>
           <p className="text-sm text-gray-700 break-words leading-relaxed">
             {comment.content}

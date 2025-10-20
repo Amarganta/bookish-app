@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { combineReducers } from "@reduxjs/toolkit";
-import authSlice from "@features/authSlice";
+import authSlice from "@/lib/features/authSlice";
 import postsReducer from "@/lib/features/postsSlice";
 
 // Configuración de persistencia

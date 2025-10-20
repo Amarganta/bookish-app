@@ -1,28 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { feedMockData } from "../data/feedMockData";
-
-export interface Comment {
-  id: string;
-  user: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  createdAt: string;
-}
-
-export interface Post {
-  id: string;
-  user: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  image?: string;
-  createdAt?: string;
-  comments: Comment[];
-  commentsCount: number;
-}
+import { Post, Comment } from "@/types/types";
 
 interface PostsState {
   list: Post[];
@@ -44,16 +22,17 @@ const postsSlice = createSlice({
       state,
       action: PayloadAction<{
         content: string;
-        user: { name: string; avatar: string };
+        author: { id: string; name: string; email: string; avatar?: string; createdAt: string };
         image?: string;
       }>
     ) => {
       const newPost: Post = {
         id: Date.now().toString(),
-        user: action.payload.user,
+        author: action.payload.author,
         content: action.payload.content,
         image: action.payload.image,
         createdAt: new Date().toISOString(),
+        likes: 0,
         comments: [],
         commentsCount: 0,
       };
@@ -72,12 +51,18 @@ const postsSlice = createSlice({
       if (post) {
         const newComment: Comment = {
           id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          user: action.payload.user,
+          author: {
+            id: Date.now().toString(),
+            name: action.payload.user.name,
+            email: "",
+            avatar: action.payload.user.avatar,
+            createdAt: new Date().toISOString(),
+          },
           content: action.payload.content,
           createdAt: new Date().toISOString(),
         };
-        post.comments.push(newComment);
-        post.commentsCount = post.comments.length;
+        post.comments?.push(newComment);
+        post.commentsCount = (post.comments?.length || 0) + 1;
       }
     },
 

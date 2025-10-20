@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { logout } from "@features/authSlice";
-import { Button } from "@/components/atoms/Button/Button";
+import { Button } from "@/components/atoms/Button";
 import { useAuth } from "@/hooks/useAuth";
-import { Avatar } from "../atoms/Avatar/Avatar";
+import { Avatar } from "../atoms/Avatar";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,10 +17,7 @@ export const Header = () => {
 
   const handleLogout = async () => {
     if (isGoogleAuth) {
-      await signOut({
-        callbackUrl: "/login",
-        redirect: true,
-      });
+      await signOut({ callbackUrl: "/login" });
     } else {
       dispatch(logout());
       router.push("/login");

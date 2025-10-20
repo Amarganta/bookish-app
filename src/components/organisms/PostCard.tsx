@@ -1,6 +1,6 @@
-import { CommentSection } from "@/components/molecules/CommentSection/CommentSection";
-import { Avatar } from "@atoms/Avatar/Avatar";
-import { Image } from "@atoms/Image/Image";
+import { CommentSection } from "@/components/molecules/CommentSection";
+import { Avatar } from "@atoms/Avatar";
+import { Image } from "@atoms/Image";
 import type { Post } from "@features/postsSlice";
 import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";

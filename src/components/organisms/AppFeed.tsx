@@ -1,5 +1,5 @@
-import { CreatePostBox } from "@molecules/CreatePostBox/CreatePostBox";
-import { PostsList } from "@molecules/PostsList/PostsList";
+import { CreatePostBox } from "@molecules/CreatePostBox";
+import { PostsList } from "@molecules/PostsList";
 
 export const AppFeed = () => {
   return (

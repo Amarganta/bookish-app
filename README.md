@@ -85,7 +85,7 @@ Esta aplicación fue desarrollada como una red social completa que permite a los
   - [x] Contador de interacciones en tiempo real
   - [x] Estados de carga y feedback visual
   
-- [x] **Deploy**
+- [ ] **Deploy**
   - [ ] Aplicación desplegada en Vercel
   - [ ] URL pública funcional
   - [ ] Build optimizado para producción

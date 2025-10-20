@@ -2,16 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { GoogleProfile } from "next-auth/providers/google";
 
-// 🔹 Log para debugging (temporal)
-// console.log("🔍 Environment variables check:", {
-//   hasClientId: !!process.env.GOOGLE_CLIENT_ID,
-//   hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
-//   hasSecret: !!process.env.NEXTAUTH_SECRET,
-//   nodeEnv: process.env.NODE_ENV,
-//   clientIdStart: process.env.GOOGLE_CLIENT_ID?.substring(0, 10) + "...",
-// });
-
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -20,48 +11,33 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 días
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      console.log("🔹 JWT Callback:", {
-        account: !!account,
-        profile: !!profile,
-      });
-
       if (account && profile) {
-        const googleProfile = profile as GoogleProfile;
-        token.id = googleProfile.sub;
-        token.name = googleProfile.name;
-        token.email = googleProfile.email;
-        token.picture = googleProfile.picture;
-
-        console.log("✅ JWT Token updated:", {
-          id: token.id,
-          name: token.name,
-          email: token.email,
-        });
+        token.id = profile.sub;
+        token.name = profile.name;
+        token.email = profile.email;
+        token.picture = profile.image;
       }
       return token;
     },
     async session({ session, token }) {
-      console.log("🔹 Session Callback:", {
-        token: !!token,
-        session: !!session,
-      });
-
       if (token && session.user) {
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
-
-        console.log("✅ Session updated:", session.user);
       }
       return session;
     },
   },
-
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true, // Activar debugging completo
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

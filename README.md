@@ -63,13 +63,76 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 ### 🔧 Desarrollo Local
 
-#### 📋 Prerrequisitos
+#### 📋 ¿Qué necesitas para levantar este proyecto?
 
-- Node.js 18+ 
-- npm, yarn o pnpm
-- Cuenta de Google (para OAuth)
+**Para desarrollo local:**
+- ✅ **Node.js 18+** (descarga desde [nodejs.org](https://nodejs.org/))
+- ✅ **Git** (para clonar el repositorio)
+- ✅ **Editor de código** (VS Code recomendado)
+- ✅ **Navegador web** (Chrome, Firefox, Safari, etc.)
 
-#### 🚀 Instalación Paso a Paso
+**Para funcionalidad completa (opcional):**
+- ✅ **Cuenta de Google** (para OAuth - opcional)
+- ✅ **Cuenta de Vercel** (para deployment - opcional)
+
+**Tiempo estimado de setup:** 5-10 minutos
+
+#### 💻 Requisitos del Sistema
+
+**Mínimos:**
+- **RAM**: 4GB (recomendado 8GB)
+- **Espacio**: 500MB libres
+- **OS**: Windows 10+, macOS 10.15+, Linux Ubuntu 18.04+
+- **Navegador**: Chrome 90+, Firefox 88+, Safari 14+
+
+**Recomendados:**
+- **RAM**: 8GB+
+- **CPU**: 4+ cores
+- **Espacio**: 1GB+ libres
+- **Node.js**: 18.17+ (LTS)
+
+#### 🎯 ¿Qué puede hacer una persona SIN configuración adicional?
+
+**✅ Funcionalidades que funcionan inmediatamente:**
+- Ver la página de inicio
+- Navegar por la interfaz
+- Ver el diseño responsivo
+- Explorar la estructura del código
+
+**✅ Funcionalidades que funcionan con configuración mínima:**
+- Registro de usuarios manuales
+- Login con usuarios registrados
+- Crear y ver posts
+- Sistema de comentarios
+- Persistencia de datos local
+
+**🔧 Funcionalidades que requieren configuración adicional:**
+- Login con Google (requiere Google OAuth)
+- Deployment en Vercel (requiere cuenta de Vercel)
+
+#### ⚡ Quick Start (2 minutos)
+
+```bash
+# 1. Clona y entra al proyecto
+git clone <tu-repositorio>
+cd bookish-app
+
+# 2. Instala dependencias
+npm install
+
+# 3. Crea archivo de configuración básica
+cp env.example .env.local
+# Edita .env.local con tus valores (para desarrollo, los valores por defecto funcionan)
+
+# 4. Ejecuta el proyecto
+npm run dev
+
+# 5. Abre http://localhost:3000 en tu navegador
+```
+
+**¡Listo!** Ya puedes usar la app con registro manual de usuarios.
+
+#### 🚀 Instalación Paso a Paso (Detallada)
 
 1. **Clona el repositorio**:
    ```bash
@@ -88,6 +151,12 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 3. **Configura variables de entorno**:
    
+   **Opción 1 - Usando el archivo de ejemplo:**
+   ```bash
+   cp env.example .env.local
+   ```
+   
+   **Opción 2 - Crear manualmente:**
    Crea un archivo `.env.local` en la raíz del proyecto:
    ```bash
    # NextAuth Configuration
@@ -99,7 +168,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
    GOOGLE_CLIENT_SECRET=tu-google-client-secret
    ```
    
-   📝 **Nota**: Usa valores de ejemplo, no los secretos reales. Para desarrollo local, puedes usar cualquier string como NEXTAUTH_SECRET.
+   📝 **Nota**: El archivo `env.example` contiene ejemplos y documentación completa. Para desarrollo local, puedes usar cualquier string como NEXTAUTH_SECRET.
    
    ⚠️ **IMPORTANTE**: Si el servidor se ejecuta en un puerto diferente (ej: 3001, 3005), actualiza la URL:
    ```bash

@@ -24,14 +24,13 @@ export const Header = () => {
           redirect: true 
         });
       } else {
-        // Para autenticación manual: limpiar TODO
+        // Para autenticación manual: limpiar solo la sesión actual
         
         // 1. Limpiar Redux store
         dispatch(logout());
         
-        // 2. Limpiar localStorage específico
-        localStorage.removeItem('mockUser');
-        localStorage.removeItem('persist:root');
+        // 2. NO limpiar los datos de usuarios (persist:root, mockUser)
+        // Solo limpiar datos de sesión específicos
         localStorage.removeItem('persist:auth');
         localStorage.removeItem('persist:posts');
         
@@ -44,10 +43,9 @@ export const Header = () => {
     } catch (error) {
       console.error("Error during logout:", error);
       
-      // Fallback: limpiar todo y redirigir
-      localStorage.clear();
-      sessionStorage.clear();
+      // Fallback: limpiar solo la sesión actual
       dispatch(logout());
+      sessionStorage.clear();
       router.push("/login");
     }
   };

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { Input } from "@/components/atoms/Input";
@@ -14,6 +15,7 @@ import type { AppDispatch } from "@/lib/store";
 
 export const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   const [form, setForm] = useState({
     fullName: "",
@@ -63,20 +65,74 @@ export const LoginForm = () => {
           createdAt: new Date().toISOString(),
         };
 
+        // Guardar en localStorage manual como respaldo (array de usuarios)
+        if (typeof window !== "undefined") {
+          // Obtener usuarios existentes
+          const existingUsers = localStorage.getItem("mockUsers");
+          let users = existingUsers ? JSON.parse(existingUsers) : [];
+
+          // Agregar nuevo usuario al array
+          users.push(newUser);
+
+          // Guardar array actualizado
+          localStorage.setItem("mockUsers", JSON.stringify(users));
+        }
+
         dispatch(loginSuccess(newUser));
-        localStorage.setItem("mockUser", JSON.stringify(newUser));
-        //LoginTemplate se encarga del redirect automáticamente
+
+        // Redirigir al feed después del registro exitoso
+        setTimeout(() => {
+          router.push("/feed");
+        }, 1000);
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const storedUser = localStorage.getItem("mockUser");
-        if (storedUser) {
-          const userData = JSON.parse(storedUser);
-          if (userData.email === form.email) {
-            dispatch(loginSuccess(userData));
-            //LoginTemplate se encarga del redirect automáticamente
-          } else {
-            throw new Error("Credenciales inválidas.");
+        // Verificar múltiples fuentes
+        const persistRoot =
+          typeof window !== "undefined"
+            ? localStorage.getItem("persist:root")
+            : null;
+        const mockUsers =
+          typeof window !== "undefined"
+            ? localStorage.getItem("mockUsers")
+            : null;
+
+        let foundUser = null;
+
+        // 1. Buscar en Redux Persist
+        if (persistRoot) {
+          try {
+            const rootData = JSON.parse(persistRoot);
+            if (rootData.auth) {
+              const authData = JSON.parse(rootData.auth);
+              if (authData.user && authData.user.email === form.email) {
+                foundUser = authData.user;
+              }
+            }
+          } catch (error) {
+            console.error("Error parsing persistRoot:", error);
           }
+        }
+
+        // 2. Buscar en localStorage manual (fallback) - array de usuarios
+        if (!foundUser && mockUsers) {
+          try {
+            const usersData = JSON.parse(mockUsers);
+            const user = usersData.find((u: any) => u.email === form.email);
+            if (user) {
+              foundUser = user;
+            }
+          } catch (error) {
+            console.error("Error parsing mockUsers:", error);
+          }
+        }
+
+        // 3. Verificar si se encontró el usuario
+        if (foundUser) {
+          dispatch(loginSuccess(foundUser));
+
+          //  Redirigir al feed después del login exitoso
+          setTimeout(() => {
+            router.push("/feed");
+          }, 1000);
         } else {
           throw new Error("No existe un usuario registrado con ese correo.");
         }
@@ -91,8 +147,8 @@ export const LoginForm = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      // signIn - NextAuth maneja el redirect
-      await signIn("google");
+      // signIn - NextAuth maneja el redirect con callback URL
+      await signIn("google", { callbackUrl: "/feed" });
     } catch (error) {
       console.error("Error Google login:", error);
     }

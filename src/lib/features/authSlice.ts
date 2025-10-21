@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthUser } from "@/types/types";
+import { store } from "@/lib/store";
 
 export interface AuthState {
   user: AuthUser | null;
@@ -28,6 +29,26 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;
+
+      // Forzar persistencia manual después del registro
+      setTimeout(() => {
+        // Capturar el estado correct del usuario recien creado
+        const correctAuthState = {
+          user: action.payload,
+          isAuthenticated: true,
+          loading: false,
+          error: null,
+        };
+
+        // Forzar que Redux Persist guarde el estado correcto
+        const currentState = store.getState();
+        const persistData = {
+          auth: JSON.stringify(correctAuthState),
+          posts: JSON.stringify(currentState.posts),
+          _persist: JSON.stringify({ version: -1, rehydrated: true }),
+        };
+        localStorage.setItem("persist:root", JSON.stringify(persistData));
+      }, 1000);
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;

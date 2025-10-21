@@ -22,11 +22,10 @@ export const LandingLayout = () => {
           <div className="mb-12">
             <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Conecta a través de los
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                libros
-              </span>
             </h2>
-
+            <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              libros
+            </h3>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Descubre nuevas lecturas, comparte tus reseñas favoritas y conecta
               con una comunidad apasionada por los libros.

@@ -90,7 +90,12 @@ Esta aplicación fue desarrollada como una red social completa que permite a los
   - [ ] URL pública funcional
   - [ ] Build optimizado para producción
 
-## Deploy Your Own
+- 🔐 **Autenticación dual**: Login manual + Google OAuth
+- 📱 **Feed de publicaciones**: Crear, ver y comentar posts
+- 🎨 **Diseño responsivo**: Mobile-first con Tailwind CSS 4
+- 🏗️ **Arquitectura Atomic Design**: Componentes organizados y reutilizables
+- 💾 **Persistencia de datos**: Redux Persist + localStorage fallback
+- 🔄 **SSR/CSR optimizado**: Next.js con hidratación inteligente
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-redux&project-name=with-redux&repository-name=with-redux)
 ### 📦 Entregables

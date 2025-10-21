@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { getCallbackUrl } from "@/lib/config";
 import Image from "next/image";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
@@ -147,8 +148,8 @@ export const LoginForm = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      // signIn - NextAuth maneja el redirect con callback URL
-      await signIn("google", { callbackUrl: "/feed" });
+      // signIn - NextAuth maneja el redirect con callback URL dinámica
+      await signIn("google", { callbackUrl: getCallbackUrl("/feed") });
     } catch (error) {
       console.error("Error Google login:", error);
     }

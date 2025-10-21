@@ -1,12 +1,12 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
+import { config } from "@/lib/config";
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: config.google.clientId,
+      clientSecret: config.google.clientSecret,
     }),
   ],
   session: {
@@ -32,7 +32,7 @@ const handler = NextAuth({
     },
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: config.nextAuth.secret,
   debug: process.env.NODE_ENV === "development",
 });
 

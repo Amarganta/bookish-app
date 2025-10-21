@@ -9,10 +9,16 @@ import { useAuth } from "@/hooks/useAuth";
 import type { Post } from "@/types/types";
 import type { RootState } from "@/lib/store";
 import { Input } from "@/components/atoms/Input";
+import { createSelector } from "@reduxjs/toolkit";
 
 interface CommentSectionProps {
   post: Post;
 }
+
+const selectPostById = createSelector(
+  [(state: RootState) => state.posts.list, (state: RootState, postId: string) => postId],
+  (posts, postId) => posts.find(post => post.id === postId)
+);
 
 export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -21,10 +27,9 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
 
-  // ✅ Obtener el post actualizado desde Redux
-  const reduxPosts = useSelector((state: RootState) => state.posts.list);
-  const updatedPost =
-    reduxPosts.find((p) => p.id === initialPost.id) || initialPost;
+  const updatedPost = useSelector((state: RootState) => 
+    selectPostById(state, initialPost.id)
+  ) || initialPost;
 
   const toggleComments = () => {
     setIsExpanded(!isExpanded);
@@ -116,7 +121,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
           </svg>
 
           <span className="text-xs sm:text-sm font-medium">
-            {/* ✅ Usar updatedPost en lugar de post inicial */}
+            {/* Usar updatedPost en lugar de post inicial */}
             {updatedPost.commentsCount > 0
               ? `${updatedPost.commentsCount} ${
                   updatedPost.commentsCount === 1 ? "comentario" : "comentarios"
@@ -145,7 +150,7 @@ export const CommentSection = ({ post: initialPost }: CommentSectionProps) => {
       {/* Lista de comentarios */}
       {isExpanded && (
         <div className="space-y-3 sm:space-y-4 mb-3 sm:mb-4">
-          {/* ✅ Usar updatedPost.comments */}
+          {/* Usar updatedPost.comments */}
           {updatedPost.comments && updatedPost.comments.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
               {updatedPost.comments.map((comment) => (

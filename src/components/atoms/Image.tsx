@@ -13,7 +13,6 @@ interface ImageProps
   className?: string;
 }
 
-// ✅ Server Component - Sin "use client"
 export const Image = forwardRef<HTMLImageElement, ImageProps>(
   (
     {

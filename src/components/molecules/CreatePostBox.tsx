@@ -11,7 +11,7 @@ import { Image } from "@atoms/Image";
 
 export const CreatePostBox = () => {
   const [postText, setPostText] = useState("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // ✅ Una sola imagen
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { currentUser } = useAuth();

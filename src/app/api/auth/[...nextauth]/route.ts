@@ -34,6 +34,9 @@ const handler = NextAuth({
 
   secret: config.nextAuth.secret,
   debug: process.env.NODE_ENV === "development",
+  pages: {
+    signIn: "/login",
+  },
 });
 
 export { handler as GET, handler as POST };

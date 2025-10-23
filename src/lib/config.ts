@@ -22,5 +22,10 @@ export const config = {
 
 // Función para obtener la URL de callback
 export const getCallbackUrl = (path: string = '/feed') => {
+  // En producción, usar NEXTAUTH_URL directamente
+  if (process.env.NODE_ENV === 'production' && process.env.NEXTAUTH_URL) {
+    return `${process.env.NEXTAUTH_URL}${path}`;
+  }
+  // En desarrollo, usar localhost
   return `${config.baseUrl}${path}`;
 };
